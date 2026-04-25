@@ -4,16 +4,17 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import NotificationBell from '@/components/NotificationBell';
 import ToastContainer from '@/components/ToastContainer';
+
 import { observeAuthState, getUser } from '@/services/index.js';
 
 // Public nav links removed globally
 
 const sellerNavLinks = [
-  { href: '/dashboard',             label: 'Dashboard',    icon: 'dashboard'   },
-  { href: '/seller/add-material',   label: 'Add Material', icon: 'add_circle'  },
-  { href: '/seller/my-listings',    label: 'My Listings',  icon: 'inventory_2' },
-  { href: '/seller/requests',       label: 'Requests',     icon: 'inbox'       },
-  { href: '/seller/analytics',      label: 'Analytics',    icon: 'bar_chart'   },
+  { href: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
+  { href: '/seller/add-material', label: 'Add Material', icon: 'add_circle' },
+  { href: '/seller/my-listings', label: 'My Listings', icon: 'inventory_2' },
+  { href: '/seller/requests', label: 'Requests', icon: 'inbox' },
+  { href: '/seller/analytics', label: 'Analytics', icon: 'bar_chart' },
 ];
 
 export default function Navbar() {
@@ -25,7 +26,31 @@ export default function Navbar() {
 
   const isSellerPage = pathname?.startsWith('/seller');
 
-  // Subscribe to Firebase Auth
+
+  // Read persisted role from localStorage for immediate UI update (prevents flicker)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const storedRole = localStorage.getItem('userRole');
+        const storedFullName = localStorage.getItem('userFullName');
+        
+        if (storedRole) setRole(storedRole);
+        if (storedFullName) {
+          const ini = storedFullName
+            .split(' ')
+            .map((w) => w[0])
+            .join('')
+            .slice(0, 2)
+            .toUpperCase();
+          setInitials(ini || 'U');
+        }
+      } catch (error) {
+        console.error('Error reading auth from localStorage:', error);
+      }
+    }
+  }, [pathname]);
+
+  // Subscribe to Firebase Auth for authoritative state
   useEffect(() => {
     const unsub = observeAuthState(async (user) => {
       if (user) {
@@ -33,6 +58,15 @@ export default function Navbar() {
           const uData = await getUser(user.uid);
           if (uData) {
             setRole(uData.role);
+            
+            // Sync authoritative data back to localStorage
+            if (typeof window !== 'undefined') {
+              localStorage.setItem('userRole', uData.role);
+              if (uData.fullName) {
+                localStorage.setItem('userFullName', uData.fullName);
+              }
+            }
+            
             const ini = (uData.fullName || '')
               .split(' ')
               .map(w => w[0])
@@ -48,10 +82,34 @@ export default function Navbar() {
       } else {
         setRole(null);
         setInitials('U');
+        
+        // Clear local storage if logged out
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('userRole');
+          localStorage.removeItem('userFullName');
+        }
       }
     });
     return () => unsub();
   }, []);
+
+  // Read persisted role from localStorage on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem('ecocycle_role');
+      if (saved) setRole(saved);
+      const stored = localStorage.getItem('ecocycle_user');
+      if (stored) {
+        const u = JSON.parse(stored);
+        const ini = (u.name || '')
+          .split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+        setInitials(ini || 'U');
+      }
+    } catch (error) {
+      console.error('Error loading user data:', error);
+      setInitials('U');
+    }
+  }, [pathname]); // re-check on route change
 
   const handleSignIn = () => {
     if (role === 'buyer') router.push('/auth/buyer');
@@ -113,11 +171,10 @@ export default function Navbar() {
                   <Link
                     key={href}
                     href={href}
-                    className={`flex items-center gap-1.5 font-semibold tracking-tight transition-all px-3 py-2 rounded-lg text-sm ${
-                      active
-                        ? 'text-primary bg-primary-fixed/40'
-                        : 'text-gray-500 hover:bg-gray-100 hover:text-on-surface'
-                    }`}
+                    className={`flex items-center gap-1.5 font-semibold tracking-tight transition-all px-3 py-2 rounded-lg text-sm ${active
+                      ? 'text-primary bg-primary-fixed/40'
+                      : 'text-gray-500 hover:bg-gray-100 hover:text-on-surface'
+                      }`}
                   >
                     <span className="material-symbols-outlined text-sm">{icon}</span>
                     {label}
@@ -195,9 +252,8 @@ export default function Navbar() {
               <Link
                 key={href}
                 href={href}
-                className={`flex flex-col items-center justify-center transition-all ${
-                  active ? 'text-primary scale-110' : 'text-gray-400 hover:text-primary'
-                }`}
+                className={`flex flex-col items-center justify-center transition-all ${active ? 'text-primary scale-110' : 'text-gray-400 hover:text-primary'
+                  }`}
               >
                 <span
                   className="material-symbols-outlined"

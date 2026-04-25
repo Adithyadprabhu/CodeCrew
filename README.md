@@ -1,4 +1,5 @@
 ♻️ CycleX – Smart Waste Segregation System
+
 📌 Overview
 
 CycleX is a full-stack web application designed to improve waste management using modern web technologies and intelligent classification techniques. The platform enables users to identify and manage different types of waste efficiently through an interactive and user-friendly interface.

@@ -1,0 +1,25 @@
+{
+  "name": "cyclex-backend",
+  "version": "1.0.0",
+  "description": "Firebase backend services for CycleX — Auth, Firestore, Storage",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js",
+    "lint": "eslint .",
+    "test": "node server.js"
+  },
+  "dependencies": {
+    "firebase": "^10.14.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "overrides": {
+    "undici": "^6.25.0"
+  }
+}

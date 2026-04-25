@@ -1,9 +1,19 @@
-# CycleX ♻️
-**AI Waste Segregation & Circular Marketplace**
+♻️ CycleX – Smart Waste Segregation System
+📌 Overview
 
-CycleX is a next-generation web application designed to revolutionize waste management by integrating AI-powered material detection with a robust circular economy marketplace. 
+CycleX is a full-stack web application designed to improve waste management using modern web technologies and intelligent classification techniques. The platform enables users to identify and manage different types of waste efficiently through an interactive and user-friendly interface.
 
-By connecting sellers (those with recyclable materials) directly with buyers (recycling centers and industries), CycleX ensures that valuable waste is repurposed rather than discarded. Our goal is to close the loop on waste generation and build a sustainable, regenerative future.
+🚧 Problem Statement
+
+Improper waste segregation leads to environmental pollution and inefficient recycling processes. Many users lack awareness and tools to correctly categorize and dispose of waste.
+
+💡 Solution
+
+This project provides a smart system that allows users to:
+
+Upload or capture images of waste
+Automatically classify waste into categories such as plastic, organic, and metal
+Get suggestions for proper disposal methods
 
 ---
 

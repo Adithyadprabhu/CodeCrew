@@ -22,6 +22,7 @@ function Toast({ msg, onClose }) {
 
 const materialTypes = ['All Materials', 'PET Plastic', 'Aluminum', 'Paper & Pulp', 'Glass', 'HDPE Plastic'];
 const locations = ['Within 50 miles', 'Within 100 miles', 'Regional', 'National'];
+const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=600&auto=format&fit=crop';
 
 export default function MarketPage() {
   const [search, setSearch]         = useState('');
@@ -47,7 +48,7 @@ export default function MarketPage() {
               detail: 'Active Listing',
               detailLabel: 'Status:',
               detailColor: 'text-primary',
-              img: d.imageUrls?.[0] || 'https://lh3.googleusercontent.com/aida-public/AB6AXuDN5HqX_qY2RUN9p4KWyZEg951JIBbc8wub5A9oeTE83YhBm7gyANzjlrRnoPOqFkt8vSoMG09wQ9bNJaEH6WTnJzG9eANaOv6lFycKtCD26y9174ca2XOqq5zM8dm2viWvZcX1JROAeJNu_Ol5Rz1Bj5IIKa8X_33YPZDSJyiBoRHNiIQ8GkVezjU9mhk-QljwoeYHpLLCek9prj9xxkReSNbX6q-Mf27gZnKVLsHe133yaNk5ReCUuwUAY1EPeffrDYtMoUf09fg',
+              img: d.imageUrls?.[0] || FALLBACK_IMAGE,
             }));
             setItems(formatted);
           });
@@ -175,19 +176,12 @@ export default function MarketPage() {
               key={item.id}
               className="bg-white rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.02)] overflow-hidden flex flex-col hover:shadow-[0_12px_24px_rgba(0,0,0,0.05)] transition-all duration-300 group border border-transparent hover:border-outline-variant"
             >
-              <div className="relative h-56 w-full overflow-hidden">
-                <img
-                  src={item.img}
-                  alt={item.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute top-4 left-4">
+              <div className="p-6 flex flex-col flex-1 border-t-4 border-primary">
+                <div className="mb-4">
                   <span className="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">
                     {item.tag}
                   </span>
                 </div>
-              </div>
-              <div className="p-6 flex flex-col flex-1">
                 <div className="flex justify-between items-start mb-2">
                   <h3 className="text-h3 font-semibold text-on-surface">{item.name}</h3>
                   <div className="text-right">

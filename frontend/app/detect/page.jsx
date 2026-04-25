@@ -56,7 +56,7 @@ export default function DetectPage() {
               </div>
               <div className="relative aspect-video w-full bg-surface-dim">
                 <img
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_4hHfd9rinCRb_zC6nRsDyfYRAiOlFIVJRvEsMPPLdlGc8lrs8jJhKh90cvQCzU6FM3sLhYrOAR6zxfjhIasYduv5WjgUsosFlOZbHuYuGIiJQHhsvjnhmoMIJSUMVjD4It2t1d-pZceenObYvO2MAFJusdCg4IFsnPa__S0MchgMAKh1_Fd8rVM_KuUVzCx5pFe9LGTXw8CvHeRRy3v51F8zh6po72E1TEhxuHxAqXILIpuu_7mGY5QsUgCrBo7_G9TWcW-eRYs"
+                  src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=600&auto=format&fit=crop"
                   alt="Disposable coffee cup on neutral background"
                   className="w-full h-full object-cover"
                 />

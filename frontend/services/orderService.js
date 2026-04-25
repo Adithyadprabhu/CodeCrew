@@ -33,6 +33,8 @@ function requireAuth() {
 export const ORDER_STATUS = Object.freeze({
   PENDING:   "pending",
   CONFIRMED: "confirmed",
+  ACCEPTED:  "accepted",
+  REJECTED:  "rejected",
   SHIPPED:   "shipped",
   DELIVERED: "delivered",
   CANCELLED: "cancelled",

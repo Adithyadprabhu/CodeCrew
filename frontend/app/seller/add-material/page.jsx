@@ -211,11 +211,21 @@ export default function AddMaterialPage() {
       if (!user) throw new Error("User not logged in");
 
       const imageUrls = [];
-      // Bypass Firebase Storage since it requires a paid plan.
-      // We simulate a 1-second upload and use placeholder images so the app works perfectly.
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      imageUrls.push("https://images.unsplash.com/photo-1605600659873-d808a1d8f742?q=80&w=600&auto=format&fit=crop");
-      if (images.length > 1) imageUrls.push("https://images.unsplash.com/photo-1532996122724-e3c354a0b15f?q=80&w=600&auto=format&fit=crop");
+      for (const img of images) {
+        try {
+          // Convert image to Base64 to bypass Firebase Storage and avoid hanging
+          const base64Url = await new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (err) => reject(err);
+            reader.readAsDataURL(img.file);
+          });
+          imageUrls.push(base64Url);
+        } catch (err) {
+          console.error("Base64 conversion failed:", err);
+          imageUrls.push("https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=600&auto=format&fit=crop");
+        }
+      }
 
       await addListing({
         name: form.materialName,

@@ -54,7 +54,7 @@ export default function SellPage() {
               </h3>
               <div className="relative rounded-lg overflow-hidden mb-6 aspect-square">
                 <img
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuDN5HqX_qY2RUN9p4KWyZEg951JIBbc8wub5A9oeTE83YhBm7gyANzjlrRnoPOqFkt8vSoMG09wQ9bNJaEH6WTnJzG9eANaOv6lFycKtCD26y9174ca2XOqq5zM8dm2viWvZcX1JROAeJNu_Ol5Rz1Bj5IIKa8X_33YPZDSJyiBoRHNiIQ8GkVezjU9mhk-QljwoeYHpLLCek9prj9xxkReSNbX6q-Mf27gZnKVLsHe133yaNk5ReCUuwUAY1EPeffrDYtMoUf09fg"
+                  src="https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?q=80&w=600&auto=format&fit=crop"
                   alt="Recycled cardboard bundles"
                   className="w-full h-full object-cover"
                 />

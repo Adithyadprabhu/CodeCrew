@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import { observeAuthState, getUser, updateUser } from '@/services/index.js';
 
 /* ── helpers at module scope ─────────────────────────────────── */
 function Field({ label, id, error, children }) {
@@ -49,38 +50,48 @@ export default function ProfilePage() {
   const [toast, setToast]         = useState(null);
   const [avatar, setAvatar]       = useState(null);   // data-URL
   const [errors, setErrors]       = useState({});
+  const [userAuth, setUserAuth]   = useState(null);
 
   const [user, setUser] = useState({
-    name: 'Buyer User', email: 'user@ecocycle.in', role: 'buyer',
-    phone: '', company: '', location: 'Mumbai, Maharashtra',
-    bio: 'Passionate about building a cleaner circular economy.',
+    name: 'Loading...', email: '', role: 'buyer',
+    phone: '', company: '', location: '',
+    bio: '',
   });
 
-  /* Load from localStorage */
+  /* Load from Firebase */
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    try {
-      const stored = localStorage.getItem('ecocycle_user');
-      const role   = localStorage.getItem('ecocycle_role') || 'buyer';
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        setUser(u => ({
-          ...u, ...parsed, role,
-          name:     parsed.name     || u.name,
-          email:    parsed.email    || u.email,
-          company:  parsed.company  || '',
-          location: parsed.location || u.location,
-        }));
+    const unsub = observeAuthState(async (authUser) => {
+      if (authUser) {
+        setUserAuth(authUser);
+        try {
+          const uData = await getUser(authUser.uid);
+          if (uData) {
+            const fetchedUser = {
+              name: uData.fullName || uData.name || 'User',
+              email: uData.email || authUser.email || '',
+              role: uData.role || 'buyer',
+              phone: uData.phone || '',
+              company: uData.company || '',
+              location: uData.location || '',
+              bio: uData.bio || 'Passionate about building a cleaner circular economy.',
+            };
+            setUser(fetchedUser);
+            // Keep local storage in sync for other components if needed
+            localStorage.setItem('ecocycle_role', fetchedUser.role);
+            localStorage.setItem('ecocycle_user', JSON.stringify(fetchedUser));
+          }
+        } catch (error) {
+          console.error('Error fetching profile data:', error);
+        }
       } else {
-        setUser(u => ({ ...u, role }));
+        router.push('/auth');
       }
+      
       const av = localStorage.getItem('ecocycle_avatar');
       if (av) setAvatar(av);
-    } catch (error) {
-      console.error('Error loading profile data:', error);
-      setUser(u => ({ ...u }));
-    }
-  }, []);
+    });
+    return () => unsub();
+  }, [router]);
 
   const isSeller = user.role === 'seller';
   const activity = isSeller ? SELLER_ACTIVITY : BUYER_ACTIVITY;
@@ -102,13 +113,28 @@ export default function ProfilePage() {
     return Object.keys(e).length === 0;
   };
 
-  const saveProfile = () => {
+  const saveProfile = async () => {
     if (!validate()) return;
-    setUser(form);
-    localStorage.setItem('ecocycle_user', JSON.stringify(form));
-    setEditing(false);
-    setForm(null);
-    showToast('✅ Profile updated successfully!');
+    try {
+      if (userAuth) {
+        await updateUser(userAuth.uid, {
+          fullName: form.name,
+          email: form.email,
+          phone: form.phone,
+          company: form.company,
+          location: form.location,
+          bio: form.bio,
+        });
+      }
+      setUser(form);
+      localStorage.setItem('ecocycle_user', JSON.stringify(form));
+      setEditing(false);
+      setForm(null);
+      showToast('✅ Profile updated successfully!');
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      showToast('❌ Error updating profile', 'error');
+    }
   };
 
   const showToast = (msg, type = 'success') => {

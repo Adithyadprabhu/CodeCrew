@@ -14,7 +14,7 @@ This project provides a smart system that allows users to:
 
 Upload or capture images of waste
 Automatically classify waste into categories such as plastic, organic, and metal
-Get suggestions for proper disposal methods
+Enable industries to sell waste materials to other industries where it can be reused, promoting a circular economy
 
 ---
 

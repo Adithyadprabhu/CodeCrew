@@ -76,6 +76,7 @@ export async function placeOrder(listingId) {
 
   const docRef = await addDoc(collection(db, "orders"), {
     buyerId,
+    sellerId: listingSnap.data().sellerId,
     listingId,
     status:    ORDER_STATUS.PENDING,
     createdAt: serverTimestamp(),
@@ -197,6 +198,29 @@ export function listenToOrdersForListing(listingId, callback) {
   const q = query(
     collection(db, "orders"),
     where("listingId", "==", listingId),
+    orderBy("createdAt", "desc")
+  );
+
+  return onSnapshot(q, (snap) => {
+    callback(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+  });
+}
+
+// ── Real-Time: Seller's Orders ────────────────────────────────
+
+/**
+ * Subscribes to live updates for all orders where the current user is the seller.
+ * @param {(orders: Array<{id:string,...}>) => void} callback
+ * @returns {() => void} Unsubscribe function
+ */
+export function listenToSellerOrders(callback) {
+  requireAuth();
+
+  // Note: this requires 'sellerId' on orders, or querying orders via listings.
+  // Assuming 'sellerId' is saved on the order for easier querying:
+  const q = query(
+    collection(db, "orders"),
+    where("sellerId", "==", auth.currentUser.uid),
     orderBy("createdAt", "desc")
   );
 

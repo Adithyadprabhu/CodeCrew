@@ -46,6 +46,7 @@ export {
   getMyOrders,
   listenToMyOrders,
   listenToOrdersForListing,
+  listenToSellerOrders,
 } from "./services/orderService.js";
 
 // ── Notifications ─────────────────────────────────────────────

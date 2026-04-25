@@ -19,7 +19,12 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@/services/*": ["../backend/services/*"],
+      "@/services": ["../backend/index.js"],
+      "@/services/index.js": ["../backend/index.js"],
+      "@/lib/firebaseConfig": ["../backend/firebase/firebaseConfig.js"],
+      "@/lib/firebaseConfig.js": ["../backend/firebase/firebaseConfig.js"]
     }
   },
   "include": [

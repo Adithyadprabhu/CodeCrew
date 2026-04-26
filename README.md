@@ -138,7 +138,7 @@ CycleX is designed to be easily deployed to modern serverless platforms.
 
 | Home Page | Marketplace | Seller Dashboard |
 |-----------|-------------|------------------|
-| https://github.com/Adithyadprabhu/CodeCrew/blob/main/Home%20page.jpeg | ![Market Placeholder]() | ![Dashboard Placeholder]() |
+| https://github.com/Adithyadprabhu/CodeCrew/blob/main/Home%20page.jpeg | (https://github.com/Adithyadprabhu/CodeCrew/blob/main/Buyer%20Dasboard.jpeg) | ![Dashboard Placeholder]() |
 
 ---
 

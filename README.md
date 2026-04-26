@@ -142,12 +142,6 @@ CycleX is designed to be easily deployed to modern serverless platforms.
 
 ---
 
-## 👨‍💻 Contributors
-
-- **Your Name** - *Lead Developer* - [GitHub Profile](https://github.com/yourusername)
-
----
-
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
